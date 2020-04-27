@@ -1457,7 +1457,7 @@ function run() {
             if (!pr) {
                 throw new Error("Event payload missing `pull_request`");
             }
-            if (pr.pull_request.body.includes(MANUAL_MERGE_MESSAGE)) {
+            if (pr.body && pr.body.includes(MANUAL_MERGE_MESSAGE)) {
                 core.debug(`Not approving manual merge pull request #${pr.number}`);
                 return;
             }
