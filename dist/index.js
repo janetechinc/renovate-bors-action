@@ -1448,6 +1448,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const github = __importStar(__webpack_require__(469));
+const MANUAL_MERGE_MESSAGE = "merge this manually";
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -1456,13 +1457,18 @@ function run() {
             if (!pr) {
                 throw new Error("Event payload missing `pull_request`");
             }
+            if (pr.pull_request.body.includes(MANUAL_MERGE_MESSAGE)) {
+                core.debug(`Not approving manual merge pull request #${pr.number}`);
+                return;
+            }
             const client = new github.GitHub(token);
             core.debug(`Creating approving review for pull request #${pr.number}`);
             yield client.pulls.createReview({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
                 pull_number: pr.number,
-                event: "APPROVE"
+                event: "APPROVE",
+                body: "bors r+"
             });
             core.debug(`Approved pull request #${pr.number}`);
         }

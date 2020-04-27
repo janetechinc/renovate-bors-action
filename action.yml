@@ -1,5 +1,5 @@
-name: 'Auto Approve'
-description: 'Automatically approve pull requests'
+name: 'Renovate Bors'
+description: 'Approve and bors renovate'
 branding:
   icon: 'check-circle'
   color: 'green'
